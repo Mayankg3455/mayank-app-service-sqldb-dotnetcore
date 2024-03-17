@@ -9,8 +9,12 @@ builder.Services.AddDbContext<MyDatabaseContext>(options =>
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-options.Configuration = builder.Configuration["sql-mayank-123-cache.redis.cache.windows.net:6380,password=PDvTo4Nsw2dZavs54MIRDb1xDqhvULAq9AzCaP88Z0w=,ssl=True,defaultDatabase=0"];
-options.InstanceName = "SampleInstance";
+var redisConfiguration = builder.Configuration["sql-mayank-123-cache.redis.cache.windows.net:6380,password=PDvTo4Nsw2dZavs54MIRDb1xDqhvULAq9AzCaP88Z0w=,ssl=True,defaultDatabase=0"];
+                    if (!redisConfiguration.IsNullOrEmpty())
+                    {
+                        options.Configuration = redisConfiguration;
+                        options.InstanceName = "SampleInstance";
+                    }
 });
 
 // Add services to the container.
