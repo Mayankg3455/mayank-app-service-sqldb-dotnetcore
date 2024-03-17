@@ -15,7 +15,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = builder.Configuration.GetValue<string>("SampleInstance");
     options.ConfigurationOptions = new ConfigurationOptions()
     {
-        EndPoints = { builder.Configuration.GetValue<string>("RedisCache:Host"), builder.Configuration.GetValue<int>("RedisCache:Port") },
+        EndPoints = { builder.Configuration.GetValue<string>("RedisCache:Host"), builder.Configuration.GetValue<string>("RedisCache:Port") },
         Password = builder.Configuration.GetValue<string>("RedisCache:Password"),
         ConnectRetry = 5,
         ReconnectRetryPolicy = new LinearRetry(1500),
