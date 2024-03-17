@@ -7,10 +7,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MyDatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
 
-builder.Services.AddStackExchangeRedisCache(options =>
+services.AddStackExchangeRedisCache(option =>
 {
-    options.Configuration = builder.Configuration.GetValue<string>("sql-mayank-123-cache.redis.cache.windows.net:6380,password=PDvTo4Nsw2dZavs54MIRDb1xDqhvULAq9AzCaP88Z0w=,ssl=True,defaultDatabase=0") ?? "FallbackConfigurationValue";
-    options.InstanceName = "SampleInstance";
+    option.InstanceName = Configuration.GetValue<string>("SampleInstance");
+    option.ConfigurationOptions = newConfigurationOptions()
+    {
+        EndPoints = { Configuration.GetValue<string>("sql-mayank-123-cache.redis.cache.windows.net"), Configuration.GetValue<string>("6380") },
+        Password = Configuration.GetValue<string>("PDvTo4Nsw2dZavs54MIRDb1xDqhvULAq9AzCaP88Z0w"),
+        ConnectRetry = 5,
+        ReconnectRetryPolicy = newLinearRetry(1500),
+        Ssl = true,
+        AbortOnConnectFail = false,
+        ConnectTimeout = 5000,
+        SyncTimeout = 5000,
+        DefaultDatabase = 0
+     };
 });
 
 // Add services to the container.
