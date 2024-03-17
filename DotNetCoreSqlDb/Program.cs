@@ -12,11 +12,11 @@ builder.Services.AddDbContext<MyDatabaseContext>(options =>
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.InstanceName = Configuration.GetValue<string>("SampleInstance");
+    options.InstanceName = builder.Configuration.GetValue<string>("SampleInstance");
     options.ConfigurationOptions = new ConfigurationOptions()
     {
-        EndPoints = { Configuration.GetValue<string>("RedisCache:Host"), Configuration.GetValue<int>("RedisCache:Port") },
-        Password = Configuration.GetValue<string>("RedisCache:Password"),
+        EndPoints = { builder.Configuration.GetValue<string>("RedisCache:Host"), builder.Configuration.GetValue<int>("RedisCache:Port") },
+        Password = builder.Configuration.GetValue<string>("RedisCache:Password"),
         ConnectRetry = 5,
         ReconnectRetryPolicy = new LinearRetry(1500),
         Ssl = true,
